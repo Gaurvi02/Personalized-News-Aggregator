@@ -77,6 +77,10 @@ This Personalized News Aggregator, developed by **Gaurvi Sood**, is an innovativ
 4. Interact with the articles by liking or disliking them to refine your feed.
 5. Click the "Generate Summary" button to enjoy a fun summary in the style of Harry Potter!
 
+##Screenshots
+
+
+
 ## Project Structure
 
 - `app.py`: Main application file containing the Streamlit web app and core logic.
