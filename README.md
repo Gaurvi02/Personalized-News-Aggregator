@@ -78,6 +78,7 @@ This Personalized News Aggregator, developed by **Gaurvi Sood**, is an innovativ
 5. Click the "Generate Summary" button to enjoy a fun summary in the style of Harry Potter!
 
 ##Screenshots
+<img width="1434" alt="1" src="https://github.com/Gaurvi02/News-analyser-using-Hashmap/assets/101133944/7f2e1486-0c77-4355-988c-2c4be85ab530">
 
 
 
