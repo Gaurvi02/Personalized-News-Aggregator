@@ -6,14 +6,14 @@ import json
 import math
 
 # Groq API key
-GROQ_API_KEY = "YOUR_GROQ_API_KEY"
+GROQ_API_KEY = "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"
 LLAMA_MODEL = "llama3-70b-8192"
 
-# System message character
-CHARACTER = "Harry Potter"
+# Default character for summary
+DEFAULT_CHARACTER = "News Reporter"
 
 # News API key
-NEWS_API_KEY = "YOUR_NEWS_API_KEY"
+NEWS_API_KEY = "395bd6703d534c759c1172ea087291e3"
 
 # News categories
 categories = [
@@ -43,7 +43,9 @@ def get_user_preferences():
     st.header("Choose your news preferences")
     preferences = []
     for category in categories:
+        # When a user selects a category, increase its value in preferences
         if st.checkbox(category.capitalize(), key=f"checkbox_{category}"):
+            st.session_state.preferences[category] += 1
             preferences.append(category)
     return preferences
 
@@ -103,16 +105,15 @@ def fetch_news(api_key, preferences):
 
 def display_news(news):
     for i, article in enumerate(news):
-        st.write(f"### {article['title']}")
-        st.write(f"**Category:** {article['category'].capitalize()}")
-        st.write(article['description'])
-        st.write(f"[Read more]({article['url']})")
-        
-        col1, col2, col3 = st.columns([1, 1, 8])
+        col1, col2 = st.columns([9, 1])
         with col1:
+            st.write(f"### {article['title']}")
+            st.write(f"**Category:** {article['category'].capitalize()}")
+            st.write(article['description'])
+            st.write(f"[Read more]({article['url']})")
+        with col2:
             if st.button("👍", key=f"like_{i}"):
                 update_preference(article['category'], 1)
-        with col2:
             if st.button("👎", key=f"dislike_{i}"):
                 update_preference(article['category'], -1)
         st.write("---")
@@ -122,12 +123,12 @@ def update_preference(category, value):
     save_preferences()
     st.experimental_rerun()
 
-def get_chat_response(news_articles):
+def get_chat_response(news_articles, character):
     client = Groq(api_key=GROQ_API_KEY)
     messages = [
         {
             "role": "system",
-            "content": (f"You are an expert news summarizer. I will provide you with news articles, you have to Summarize them in conversational paragraphs like how {CHARACTER} would say this. Keeping coherent and concise is key. Also have a bit of fun with it!")
+            "content": (f"You are an expert news summarizer. I will provide you with news articles, you have to Summarize them in conversational paragraphs like how {character} would say this. Keeping coherent and concise is key. Also have a bit of fun with it!")
         },
         {"role": "user", "content": news_articles}
     ]
@@ -152,13 +153,10 @@ def main():
     1. **Select Categories**: Choose your preferred news categories.
     2. **Fetch News**: Get the latest articles based on your preferences.
     3. **Interact**: Like or dislike articles to refine your feed.
-    4. **AI Summary**: Enjoy a fun summary in the style of Harry Potter!
+    4. **AI Summary**: Enjoy a fun summary in the style of your favorite character!
 
     Your interactions help tailor the news to your interests. The more you use it, the better it gets!
     """)
-    
-    st.sidebar.header("Your Category Preferences")
-    st.sidebar.write(st.session_state.preferences)
     
     user_preferences = get_user_preferences()
     
@@ -173,20 +171,22 @@ def main():
             
             # Fetch news based on preferences
             st.session_state.news = fetch_news(NEWS_API_KEY, st.session_state.preferences)
-          
-
+    
     if st.session_state.news:
         st.subheader("Your personalized news feed:")
         display_news(st.session_state.news)
         
         collected_news = "\n\n".join([f"Title: {article['title']}\nDescription: {article['description']}" for article in st.session_state.news])
         
+        # User input for character
+        character = st.text_input("Enter a character for the summary:", DEFAULT_CHARACTER)
+        
         # Get the chat response
         if st.button("Generate Summary"):
-            with st.spinner(f"Generating summary in the style of {CHARACTER}..."):
-                chat_response = get_chat_response(collected_news)
+            with st.spinner(f"Generating summary in the style of {character}..."):
+                chat_response = get_chat_response(collected_news, character)
             
-            st.subheader(f"Summary in the style of {CHARACTER}:")
+            st.subheader(f"Summary in the style of {character}:")
             st.write(chat_response)
 
 if __name__ == "__main__":
