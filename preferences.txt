@@ -1,1 +1,1 @@
-{"business": 0, "entertainment": 2, "general": 0, "health": 0, "science": 0, "sports": 3, "technology": 1}
+{"business": 0, "entertainment": 0, "general": 0, "health": 0, "science": 0, "sports": 0, "technology": 0}
