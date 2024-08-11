@@ -75,7 +75,7 @@ This Personalized News Aggregator, developed by **Gaurvi Sood**, is an innovativ
 2. Select your preferred news categories from the sidebar.
 3. Click the "Fetch News" button to retrieve the latest articles based on your preferences.
 4. Interact with the articles by liking or disliking them to refine your feed.
-5. Click the "Generate Summary" button to enjoy a fun summary in the style of Harry Potter!
+5. Click the "Generate Summary" button to enjoy a fun summary in the style of any character you like!
 
 ## Screenshots
 
